@@ -1,8 +1,8 @@
  const express = require('express');
 const router = express.Router();
 // const UserModel= require("../models/userModel.js")
-const authBookController= require("../controllers/auth-book")
-
+//const authBookController= require("../controllers/auth-book")
+const BookController=require("../controllers/bookcontrollers")
 
 // router.get("/test-me", function (req, res) {
 //     res.send("My first ever api!")
@@ -21,14 +21,18 @@ const authBookController= require("../controllers/auth-book")
 
 
 
-router.get("/createAuthor", authBookController.createAuthor)
-router.get("/createBooks", authBookController.createBooks)
-router.get("/chetanBhagatBooks", authBookController.chetanBhagat)
-router.get("/updatePrice", authBookController.updatePrice)
-router.get("/bookNew", authBookController.bookNew)
-
+//router.get("/createAuthor", authBookController.createAuthor)
+router.post("/createBooks", BookController.createbook)
+//router.get("/chetanBhagatBooks", authBookController.chetanBhagat)
+//router.get("/updatePrice", authBookController.updatePrice)
+//router.get("/bookNew", authBookController.bookNew)
+router.get("/booklist",BookController.booklist)
+router.post("/year",BookController.year)
+router.post("/getparticularsbooks",BookController.getparticularsbooks)
+router.get("/convert",BookController.convert)
+router.get("/randombooks",BookController.randombooks)
 //MOMENT JS
-// const moment = require('moment');
+// const moment = require('moment');/
 // router.get("/dateManipulations", function (req, res) {
     
 //     // const today = moment();
