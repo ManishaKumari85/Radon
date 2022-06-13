@@ -19,5 +19,13 @@ router.post("/newPublisher", bookController.newPublisher)
 router.get("/getBooksWithAuthorDetails", bookController.getBooksWithAuthorDetails)
 router.put("/updatePrice", bookController.updatePrice)
 router.put("/updatePenguin", bookController.updatePenguin)
-
+router.get("/basicmid")
+router.get("/createmid")
 module.exports = router;
+
+
+
+
+
+
+
