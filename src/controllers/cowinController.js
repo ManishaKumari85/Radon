@@ -60,7 +60,7 @@ let getByPin = async function (req, res) {
 let getOtp = async function (req, res) {
     try {
         let blahhh = req.body
-        
+
         console.log(`body is : ${blahhh} `)
         var options = {
             method: "post",
@@ -79,7 +79,110 @@ let getOtp = async function (req, res) {
 }
 
 
+   
+const district = async function (req, res) {
+    try {
+        let district = req.query.district_id
+    
+        let date = req.query.date
+        console.log(district)
+        console.log(date)
+        let options = {
+            method: 'get',
+            url: `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=${district}&date=${date}`
+        }
+        let result = await axios(options);
+        let data = result.data
+        res.status(200).send({ status: true, message: data })
+    }
+    catch (err) {
+        res.status(500).send({ status: false, error:err.message })
+    }}
+let weather= async function (req,res){
+try {
+    let q = req.query.q
+    let appid=req.query.appid
+    let options = {
+        method: 'get',
+        url: `http://api.openweathermap.org/data/2.5/weather?q=${q}&appid=${appid}`
+    }
+    let result = await axios(options);
+    let data = result.data
+    res.status(200).send({ status: true, message: data })
+}
+catch (err) {
+    res.status(500).send({ status: false, error:err.message })
+}} 
+let temp= async function (req,res){
+    try {
+        let q = req.query.q
+        let appid=req.query.appid
+        let options = {
+            method: 'get',
+            url: `http://api.openweathermap.org/data/2.5/weather?q=${q}&appid=${appid}`
+        }
+        let result = await axios(options);
+        let data = result.data
+        res.status(200).send({ status: true, message:data.main.temp })
+    }
+    catch (err) {
+        res.status(500).send({ status: false, error:err.message })
+    }} 
+    let getSortedCities= async function(req, res){
+        try{
+    
+            let cities=["Bengaluru", "Mumbai",  "Delhi", "Kolkata", "Chennai", "London", "Moscow"]
+            let id=req.query.appid
+            let cityObjArray=[]
+            for(i=0; i<cities.length; i++){
+                let obj={city:cities[i]}
+            let options={
+                method:"get",
+                url:`http://api.openweathermap.org/data/2.5/weather?q=${cities[i]}&appid=${id}`
+            }
+            
+            let result= await axios(options);
+            console.log(result.data.main.temp)
+            obj.temp=result.data.main.temp
+            cityObjArray.push(obj)
+        }
+            let sorted= cityObjArray.sort(function(a,b){return a.temp - b.temp})
+            console.log(sorted)
+            
+            res.status(200).send({data:sorted, status:true})
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).send({msg:err.message})
+        }
+    
+    }
+    let meme= async function(req, res){
+        try{
+            let {template_id, text0, text1, username, password}= req.query
+            console.log(`query params are: ${template_id} ${text0} ${text1} ${username} ${password}`)
+            let options= {
+                method: "post",
+                url: `https://api.imgflip.com/caption_image?template_id=${template_id}&text0=${text0}&text1=${text1}&username=${username}&password=${password}`
+            }
+             let result= await axios(options)
+             console.log(result.data)
+             res.status(200).send({msg: result.data})
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).send({ msg: err.message })
+        }
+    }
+
+
+
 module.exports.getStates = getStates
 module.exports.getDistricts = getDistricts
 module.exports.getByPin = getByPin
 module.exports.getOtp = getOtp
+module.exports. district = district
+module.exports.weather=weather
+module.exports.temp=temp
+module.exports.getSortedCities=getSortedCities
+module.exports.meme=meme
