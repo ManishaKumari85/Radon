@@ -30,6 +30,9 @@ const getBlog = async function(req, res){
             isPublished: true,
             ...q
         };
+        const validate = await authorController.findById(q.authorId);
+        if(!validate) return res.status(404).send({status:false, msg: "AuthorId is not valid"});
+
         const data = await blogModel.find(filter);
         if(data.length == 0) return res.status(404).send({status:false, msg: "No blog is found"});
 
@@ -47,7 +50,7 @@ const updateBlog = async function(req, res){
         if (!validId){
             return res.status(400).send({status:false, msg:"Blog Id is invalid"})
         }
-        const authorIdFromParam = req.params.authorId
+        const authorIdFromParam = req.body.authorId
         const authorIdFromBlog = validId.authorId.toString()
         if (authorIdFromParam !== authorIdFromBlog) {
             return res.status(401).send({status : false, msg : "This is not your blog, you can not update it."})
@@ -65,4 +68,17 @@ const updateBlog = async function(req, res){
     }
 }
 
-module.exports = {createBlog, getBlog, updateBlog};
+const deleteBlogById = async function(req, res){
+    try{
+        const blogId = req.params.blogId;
+        if(!blogId) return res.status(404).send({status: false, msg: "BlogId is invalid"});
+        const deleteDetails = await blogModel.findOneAndUpdate(
+            {_id: blogId, },
+            {}
+        )
+    }catch(err){
+        res.status(404).send({msg: err.message})
+    }
+}
+
+module.exports = {createBlog, getBlog, updateBlog, deleteBlogById};
