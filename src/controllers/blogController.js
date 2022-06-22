@@ -1,5 +1,6 @@
-const authorController = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
+const authorModel = require ("../models/authorModel");
+const authorController = require("../models/authorModel");
 const blogController = require("../models/blogModel");
 
 const createBlog = async function(req, res){
@@ -89,7 +90,35 @@ const deleteBlogById = async function(req, res){
 
 const deleteBlogByQuery = async function(req, res){
     try{
+        const data = req.query;
 
+
+        const { authorId, category, subcategory, tags } = data
+        
+        if (category) {
+            let verifyCategory = await blogModel.findOne({ category: category })
+            if (!verifyCategory) return res.status(400).send({ status: false, msg: 'No blogs in this category exist' });
+        }
+
+        if (tags) {
+            let verifytags = await blogModel.findOne({ tags: tags })
+            if (!verifytags) return res.status(400).send({ status: false, msg: 'no blog with this tags exist' });
+        }
+
+        if (subcategory) {
+            let verifysubcategory = await blogModel.findOne({ subcategory: subcategory })
+            if (!verifysubcategory) return res.status(400).send({ status: false, msg: 'no blog with this subcategory exist'});
+        }
+
+        let findBlog = await blogModel.find({$and :[data, {isdeleted : false}, {authorId : authorId} ]});
+        
+        if(!findBlog) return res.status(400).send({status :false, msg : "no blogs are present with this query"});
+
+        const deleteByQuery = await blogModel.updateMany(data, { isDeleted: true, deletedAt: new Date()},{ new: true });
+
+        if (deleteByQuery){
+        res.status(200).send({ status: true, msg : "Your blogs have been deleted", data: deleteByQuery })
+    }
     }catch(err){
         res.status(500).send({status: false, msg: err.message})
     }
