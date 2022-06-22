@@ -72,13 +72,27 @@ const deleteBlogById = async function(req, res){
     try{
         const blogId = req.params.blogId;
         if(!blogId) return res.status(404).send({status: false, msg: "BlogId is invalid"});
+
+        const check = await blogModel.findById({_id: blogId});
+        if(check.isDeleted == true) return res.status(404).send({status: false, msg: "The blog is already deleted"});
+
         const deleteDetails = await blogModel.findOneAndUpdate(
-            {_id: blogId, },
-            {}
+            {_id: blogId },
+            {isDeleted: true, deletedAt: new Date()},
+            {new: true}
         )
+        res.status(200).send({status: true, data: deleteDetails});
     }catch(err){
-        res.status(404).send({msg: err.message})
+        res.status(404).send({msg: err.message});
     }
 }
 
-module.exports = {createBlog, getBlog, updateBlog, deleteBlogById};
+const deleteBlogByQuery = async function(req, res){
+    try{
+
+    }catch(err){
+        res.status(500).send({status: false, msg: err.message})
+    }
+}
+
+module.exports = {createBlog, getBlog, updateBlog, deleteBlogById, deleteBlogByQuery};
