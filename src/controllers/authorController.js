@@ -10,15 +10,15 @@ const createAuthor = async function(req, res){
     if(!details.email) return res.status(400).send({status: false, msg: "Email is required"} );
     if(!details.password) return res.status(400).send({status: false, msg: "Password is required"} );
   
-    const validateEmail = (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(details.email));
-    if(!validateEmail) return res.send(400).send({status: false, msg: "Invalid Email ID, Please check"});
+    const validateEmail = (/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/.test(details.email));
+    if(!validateEmail) return res.status(400).send({status: false, msg: "Invalid Email ID, Please check"});
   
     const data = await authorModel.create(details)
-      res.status(201).send({status: true, data: data});
+    res.status(201).send({status: true, data: data});
     
   }
   catch(err){
-    res.send(500).send({status: false, error: err.message});
+    res.status(500).send({status: false, error: err.message});
   }
 }
 

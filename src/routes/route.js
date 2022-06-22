@@ -9,5 +9,7 @@ router.get("/test-me", function (req, res) {
 
 router.post("/authors", userController.createAuthor);
 router.post("/blogs", blogController.createBlog);
+router.get("/blogs",blogController.getBlog);
+router.put("/blogs/:blogId", blogController.updateBlog);
 
 module.exports = router;
