@@ -4,21 +4,21 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const blogSchema = new mongoose.Schema( {
     title: {
         type: String,
-        require: true
+        required: true
     },
     body: {
         type: String,
-        require: true
+        required: true
     },
     authorId: {
         type: ObjectId,
         ref: "Author",
-        require: true
+        required: true
     },
     tags: [String],
     category: {
         type: [String],
-        require: true
+        required: true
     },
     subcategory: [String],
     deletedAt: {
