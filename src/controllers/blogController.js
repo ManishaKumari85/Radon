@@ -51,11 +51,7 @@ const updateBlog = async function(req, res){
         if (!validId){
             return res.status(400).send({status:false, msg:"Blog Id is invalid"})
         }
-        const authorIdFromParam = req.body.authorId
-        const authorIdFromBlog = validId.authorId.toString()
-        if (authorIdFromParam !== authorIdFromBlog) {
-            return res.status(401).send({status : false, msg : "This is not your blog, you can not update it."})
-        }
+       
         const updatedDetails = await blogModel.findOneAndUpdate(
             {_id : blogId},
             {title : details.title, body : details.body, tags : details.tags,
@@ -91,8 +87,6 @@ const deleteBlogById = async function(req, res){
 const deleteBlogByQuery = async function(req, res){
     try{
         const data = req.query;
-
-
         const { authorId, category, subcategory, tags } = data
         
         if (category) {
