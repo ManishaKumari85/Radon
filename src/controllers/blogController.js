@@ -5,7 +5,7 @@ const blogController = require("../models/blogModel");
 const validator = require("validator");
 
 const createBlog = async function(req, res){
-    // try{
+     try{
         const details = req.body
 
         if(!details.title) return res.status(400).send({status: false, msg: "Title of the blog is required"});
@@ -25,10 +25,10 @@ const createBlog = async function(req, res){
 
         const data = await blogController.create(details)
         res.status(200).send({status: true, data: data})
-    // }
-    // catch(err){
-    //     res.status(500).send({status: false, msg: err.message});
-    // }
+     }
+     catch(err){
+         res.status(500).send({status: false, msg: err.message});
+     }
 }
 
 const getBlog = async function(req, res){
