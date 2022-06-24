@@ -4,8 +4,9 @@ const createAuthor = async function(req, res){
   try{
     const details = req.body;
 
-    if(!details.fname) return res.status(400).send({status: false, msg: "First name is required"} );
     const letters = /^[A-Za-z]+$/;
+
+    if(!details.fname) return res.status(400).send({status: false, msg: "First name is required"} );
     if(!details.fname.match(letters)){return res.status(400).send({status: false, msg: 'First name should contain only alphabets'})};
     
     if(!details.lname) return res.status(400).send({status: false, msg: "Last name is required"} );
