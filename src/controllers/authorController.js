@@ -5,9 +5,20 @@ const createAuthor = async function(req, res){
     const details = req.body;
 
     if(!details.fname) return res.status(400).send({status: false, msg: "First name is required"} );
+    const letters = /^[A-Za-z]+$/;
+    if(!details.fname.match(letters)){return res.status(400).send({status: false, msg: 'First name should contain only alphabets'})};
+    
     if(!details.lname) return res.status(400).send({status: false, msg: "Last name is required"} );
+    if(!details.lname.match(letters)){return res.status(400).send({status: false, msg: 'Last name should contain only alphabets'})};
+
     if(!details.title) return res.status(400).send({status: false, msg: "Title is required"} );
+    let word = ['Mr', 'Mrs', 'Miss'];
+    if(!word.includes(details.title)){return res.status(400).send({status: false, msg: 'Title can accept only Mr/Mrs/Miss!'})};
+
     if(!details.email) return res.status(400).send({status: false, msg: "Email is required"} );
+    let isUnique = await authorModel.findOne({email: details.email});
+    if(isUnique){return res.status(400).send({status: false, msg: 'Enter a unique email id!'})};
+
     if(!details.password) return res.status(400).send({status: false, msg: "Password is required"} );
   
     const validateEmail = (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(details.email));

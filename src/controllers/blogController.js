@@ -8,8 +8,15 @@ const createBlog = async function(req, res){
         const details = req.body
 
         if(!details.title) return res.status(400).send({status: false, msg: "Title of the blog is required"});
+        if(!validator.isLength(details.title, {min: 5, max: 30})){return res.status(400).send({status: false, msg: 'The length of the title should contain minium 5 and maximum 30 charactors!'})};
+        
         if(!details.body) return res.status(400).send({status: false, msg: "Body of the blog is required"});
+        if(!validator.isLength(data.body, {min: 10})){return res.status(400).send({status: false, msg: 'The length of body should have atleast 10 letters.'})};
+        
         if(!details.authorId) return res.status(400).send({status: false, msg: "Author_Id of the blog is required"});
+        let authorDetails = await authorModel.findOne({_id: data.authorId});
+        if(!authorDetails){res.status(400).send({status: false, msg: "The Author with the given author id doesn't exist"})};
+        
         if(!details.category) return res.status(400).send({status: false, msg: "Category of the blog is required"});
 
         const validate = await authorController.findById(details.authorId);
