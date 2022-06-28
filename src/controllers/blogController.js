@@ -39,13 +39,16 @@ const getBlog = async function(req, res){
             isPublished: true,
             ...q
         };
+        if(q.authorId){
         const validate = await authorController.findById(q.authorId);
         if(!validate) return res.status(404).send({status:false, msg: "AuthorId is not valid"});
-
+        }
         const data = await blogModel.find(filter);
         if(data.length == 0) return res.status(404).send({status:false, msg: "No blog is found"});
 
         res.status(201).send({status: true, data: data})
+
+        
     }catch(err){
         res.status(500).send({status: false, msg: err.message});
     }

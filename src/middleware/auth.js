@@ -18,6 +18,7 @@ const authorization = async function (req, res, next){
         let headersData = req.headers;
         let authorIdFromHeader = headersData[`authorId`];
         if(!authorIdFromHeader) authorIdFromHeader = headersData[`authorid`];
+        console.log(authorIdFromHeader)
         let userLoggedIn = decodedToken.userId;
         let userToBeModified = req.body.authorId || req.params.authorId || req.query.authorId || authorIdFromHeader;
         if(userLoggedIn !== userToBeModified) return res.status(403).send({status: false, msg: "You are not authorised to do this"});
