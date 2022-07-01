@@ -38,7 +38,7 @@ const createCollege = async function(req,res){
         if (usedName) return res.status(400).send({ status: false, msg: `${details.name} already created`})
    
        const data =await collegeModel.create(details)
-       res.status(201).send({status: true, msg :"all data is created sucessfuly",data:data})
+       res.status(201).send({status: true, msg :"data is created sucessfuly",data:data})
        }
    
    catch(err){res.status(500).send({status:false,error:err.message})}
@@ -87,7 +87,8 @@ const getInternsInCollege = async function (req, res) {
    
        if (collegeName) {
            obj.name = collegeName
-       }else{return res.status(400).send({status : false , msg : "please enter College Name"})}
+       }  
+       else {return res.status(400).send({status : false , msg : "please enter College Name"})}
        
    
        let savedData = await collegeModel.findOne(obj).select({name:1, fullName:1, logoLink:1, _id: 1})
