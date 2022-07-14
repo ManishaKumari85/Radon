@@ -93,7 +93,7 @@ const updateReview = async function (req, res) {
         return res.status(404).send({ status: false, message: "No book found or it maybe deleted" })
 
         const findReview = await reviewModel.findOne({ _id: reviewId, isDeleted: false })
-
+console.log(findReview)
         if (!findReview) 
         return res.status(404).send({ status: false, message: "No review found or it maybe deleted" })
 
@@ -101,7 +101,7 @@ const updateReview = async function (req, res) {
 
         const updatedReview = await reviewModel.findOneAndUpdate({ _id: reviewId },{reviewedBy:data.reviewedBy,rating:data.rating, review:data.review},{ new:true,updatedAt: Date.now()})
 
-
+console.log(updateReview)
         return res.status(200).send({ status: true, message: "successfully updated", data: updatedReview })
 
 
