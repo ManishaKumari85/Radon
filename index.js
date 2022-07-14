@@ -2,7 +2,7 @@ const express = require("express")
 const route = require('./Routes/routes')
 const  mongoose = require("mongoose")
 const app = express()
-const port =process.env.PORT || 3000
+const port =process.env.PORT || 5000
 const multer=require("multer")
 //MIDDLEWARE
 app.use(express.json());
