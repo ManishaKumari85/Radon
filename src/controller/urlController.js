@@ -45,6 +45,11 @@ const shortUrl=async function(req,res){
     if(typeof longUrl!="string") return res.status(400).send({status:false,message:"please Provide url in string"});
 
     if (!validator( longUrl)) return res.status(400).send({status:false,message:"please Provide valid url"});
+
+     let cahcedUrlData = await GET_ASYNC(`${longUrl}`)
+     if (cahcedUrlData) {
+            return  res.status(201).send({status:true,data:JSON.parse(cahcedUrlData)})
+    }else{
     let alreadyUrl= await urlModel.findOne({longUrl:longUrl},{updatedAt:0,createdAt:0,__v:0,_id:0})
     if(alreadyUrl) return  res.status(200).send({status:true, data:alreadyUrl});
 
@@ -53,9 +58,10 @@ const shortUrl=async function(req,res){
       data.urlCode=short
 
    let savedata=await urlModel.create(data) 
-   let final= {longUrl:savedata.longUrl,shortUrl:savedata.shortUrl, urlCode:savedata.urlCode} 
+   let final= {urlCode:savedata.urlCode,longUrl:savedata.longUrl,shortUrl:savedata.shortUrl} 
+   await SET_ASYNC(`${longUrl}`,(JSON.stringify(final)))
    return res.status(201).send({status:true, data:final});
-   // console.log(short)
+}
   }catch(error){
    return res.status(500).send({status:false,message:error.message});
 
@@ -91,6 +97,4 @@ console.log(urlData.longUrl)
 }
 
 
-module.exports={shortUrl,getUrl
-
-} 
+module.exports={shortUrl,getUrl} 
