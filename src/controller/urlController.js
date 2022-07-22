@@ -46,7 +46,7 @@ const shortUrl=async function(req,res){
 
     if (!validator( longUrl)) return res.status(400).send({status:false,message:"please Provide valid url"});
     let alreadyUrl= await urlModel.findOne({longUrl:longUrl},{updatedAt:0,createdAt:0,__v:0,_id:0})
-    if(alreadyUrl) return  res.status(400).send({status:true, data:alreadyUrl});
+    if(alreadyUrl) return  res.status(200).send({status:true, data:alreadyUrl});
 
      let short=shortId.generate()
      data.shortUrl="http://localhost:3000/"+`${short}`
@@ -75,8 +75,8 @@ const getUrl = async function (req, res) {
               return  res.status(404).send({ status: false, message: "urlCode not found!" });
             }
             await SET_ASYNC(`${req.params.urlCode}`,(urlData.longUrl))
-
-
+console.log(req.params.urlCode)
+console.log(urlData.longUrl)
             console.log("Redirecting to the url!!")
             return res.status(302).redirect(urlData.longUrl);
 
